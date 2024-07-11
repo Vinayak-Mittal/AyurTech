@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter.ttk import Entry
+import csv
 
 # Dictionary for disease and drug suggestions
 disease_drugs = {
@@ -67,7 +69,6 @@ disease_drugs = {
     "Obesity": ["Guggul", "Triphala", "Green Tea"],
     "Acne": ["Neem", "Manjistha", "Tea Tree Oil"],
     "Chronic Fatigue": ["Ashwagandha", "Shilajit", "Rhodiola"],
-    "Cough": ["Honey", "Tulsi", "Echinacea"],
     "Insomnia": ["Brahmi", "Jatamansi", "Lemon Balm"],
     "Constipation": ["Triphala", "Haritaki", "Psyllium Husk"],
     "Hemorrhoids": ["Aloe Vera", "Turmeric", "Witch Hazel"],
@@ -89,9 +90,44 @@ disease_drugs = {
     "Stress": ["Ashwagandha", "Brahmi", "L-Theanine"],
     "Hypothyroidism": ["Kanchanar", "Guggul", "Ashwagandha"],
     "Piles": ["Triphala", "Aloe Vera", "Witch Hazel"],
-    "Kidney Stones": ["Punarnava", "Gokshura", "Dandelion Root"],
+    "kidney stone": ["Punarnava", "Gokshura", "Dandelion Root"],
     # Add more diseases and drug suggestions as needed
 }
+
+# formulation of ayurvedic drugs
+formulation_drug = {
+    "kidney stone": [
+        "Mix Punarnava, Gokshura, and Dandelion Root in equal parts.",
+        "Prepare a decoction by boiling these herbs in water.",
+        "Strain the decoction and drink it to help alleviate kidney stones."
+    ],
+    "Piles" : [
+        "Prepare a mixture of Triphala powder, Aloe Vera gel, and Witch Hazel extract.",
+        "Apply this mixture topically to the affected area for soothing relief.",
+        "Additionally, consume a teaspoon of Triphala powder with warm water before bedtime.",
+        "Ensure a high-fiber diet and stay hydrated to promote healthy bowel movements.",
+        "Consult with a healthcare professional for personalized advice and treatment."
+    ],
+    "Hypothyroidism" : [
+    "Create a decoction by boiling Kanchanar bark, Guggul resin, and Ashwagandha root in water.",
+    "Strain the decoction and drink it in the morning on an empty stomach.",
+    "Include Ashwagandha in your diet regularly for its adaptogenic properties.",
+    "Practice stress-reducing techniques like yoga and meditation.",
+    "Consult with a healthcare professional for thyroid function monitoring and personalized advice."
+    ],
+    "Stress" :[
+    "Prepare a calming tea by infusing equal parts of Ashwagandha and Brahmi in hot water.",
+    "Take L-Theanine supplements to promote relaxation and reduce stress levels.",
+    "Practice mindfulness meditation for 10-15 minutes daily.",
+    "Incorporate stress-reducing activities like deep breathing exercises and gentle yoga into your routine.",
+    "Ensure a balanced diet with whole foods, and stay hydrated.",
+    "Consult with a healthcare professional for personalized advice and support."
+    ],
+    
+    # ... (More formulations)
+}
+
+
 
 # Function to suggest drugs based on the disease
 def suggest_drugs():
@@ -102,22 +138,38 @@ def suggest_drugs():
     else:
         result_label.config(text=f"No drug suggestions found for {disease}.")
 
+# Function for formultaion of  drugs based on the disease
+def formulated():
+    disease = entry.get()
+    if disease in formulation_drug:
+        formulated= "\n".join([f"{j + 1}. {drug}" for j, drug in enumerate(formulation_drug[disease])])
+        result_label.config(text=f"formultion for drugs {disease}:\n{formulated}")
+    else:
+        result_label.config(text=f"No formulation of drugs suggestions found for {disease}.")
+
 # the main window
 root = tk.Tk()
 root.title("Drug Suggestion App")
+window_width = 400 
+window_height = 400 
+root.geometry(f"{window_width}x{window_height}")
 
 #  configure input elements
 label = tk.Label(root, text="Enter a disease name:")
 label.pack(pady=10)
-
 entry = tk.Entry(root)
 entry.pack()
 
+# button for drugs
 suggest_button = tk.Button(root, text="Suggest Drugs", command=suggest_drugs)
 suggest_button.pack(pady=10)
 
+# button for formulation of drug
+suggest_button = tk.Button(root, text="Formulation", command=formulated)
+suggest_button.pack(pady=10)
+
 # configure output label
-result_label = tk.Label(root, text="", wraplength=300)
+result_label = tk.Label(root, text="", wraplength=400)
 result_label.pack(pady=10)
 
 # the main GUI loop
